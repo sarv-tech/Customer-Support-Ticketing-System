@@ -17,7 +17,13 @@ export const metadata: Metadata = {
   description: "Customer Support Ticketing System",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { cookies } from 'next/headers'
+import { signOut } from './actions/auth'
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies()
+  const isAuthenticated = cookieStore.has('auth_token')
+
   return (
     <html
       lang="en"
@@ -35,12 +41,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   Datastraw CRM
                 </a>
               </div>
-              <div className="flex items-center space-x-6">
-                <a href="/" className="text-slate-600 hover:text-blue-700 font-semibold text-sm transition-colors">Dashboard</a>
-                <a href="/tickets/new" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                  + Create Ticket
-                </a>
-              </div>
+              {isAuthenticated && (
+                <div className="flex items-center space-x-6">
+                  <a href="/" className="text-slate-600 hover:text-blue-700 font-semibold text-sm transition-colors">Dashboard</a>
+                  <a href="/tickets/new" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+                    + Create Ticket
+                  </a>
+                  <form action={signOut}>
+                    <button type="submit" className="text-slate-500 hover:text-red-600 font-semibold text-sm transition-colors">Sign Out</button>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </header>
