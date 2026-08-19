@@ -51,16 +51,16 @@ export default function NewTicketPage() {
           </p>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-8 space-y-8">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-xl text-base font-medium">
               {error}
             </div>
           )}
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             <div>
-              <label htmlFor="customerName" className="block text-sm font-medium text-slate-700">
+              <label htmlFor="customerName" className="block text-sm font-bold text-slate-800 tracking-wide uppercase mb-2">
                 Customer Name
               </label>
               <input
@@ -68,12 +68,12 @@ export default function NewTicketPage() {
                 name="customerName"
                 id="customerName"
                 required
-                className="mt-1 block w-full border border-slate-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full border border-slate-300 rounded-xl shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-slate-50 hover:bg-white focus:bg-white transition-colors"
               />
             </div>
 
             <div>
-              <label htmlFor="customerEmail" className="block text-sm font-medium text-slate-700">
+              <label htmlFor="customerEmail" className="block text-sm font-bold text-slate-800 tracking-wide uppercase mb-2">
                 Customer Email
               </label>
               <input
@@ -81,13 +81,13 @@ export default function NewTicketPage() {
                 name="customerEmail"
                 id="customerEmail"
                 required
-                className="mt-1 block w-full border border-slate-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="block w-full border border-slate-300 rounded-xl shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-slate-50 hover:bg-white focus:bg-white transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="subject" className="block text-sm font-bold text-slate-800 tracking-wide uppercase mb-2">
               Subject
             </label>
             <input
@@ -95,19 +95,19 @@ export default function NewTicketPage() {
               name="subject"
               id="subject"
               required
-              className="mt-1 block w-full border border-slate-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border border-slate-300 rounded-xl shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-slate-50 hover:bg-white focus:bg-white transition-colors"
             />
           </div>
 
           <div>
-            <label htmlFor="priority" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="priority" className="block text-sm font-bold text-slate-800 tracking-wide uppercase mb-2">
               Priority
             </label>
             <select
               name="priority"
               id="priority"
               defaultValue="Medium"
-              className="mt-1 block w-full bg-white border border-slate-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border border-slate-300 rounded-xl shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-slate-50 hover:bg-white focus:bg-white transition-colors cursor-pointer"
             >
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -117,30 +117,30 @@ export default function NewTicketPage() {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="description" className="block text-sm font-bold text-slate-800 tracking-wide uppercase mb-2">
               Description
             </label>
             <textarea
               name="description"
               id="description"
-              rows={4}
+              rows={5}
               required
-              className="mt-1 block w-full border border-slate-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border border-slate-300 rounded-xl shadow-sm py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base bg-slate-50 hover:bg-white focus:bg-white transition-colors resize-y"
             ></textarea>
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-slate-200">
+          <div className="flex justify-end pt-6 border-t border-slate-200 gap-4">
             <button
               type="button"
               onClick={() => router.back()}
-              className="bg-white py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3 transition-colors"
+              className="bg-white py-3 px-6 border border-slate-300 rounded-xl shadow-sm text-base font-bold text-slate-700 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all duration-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 border border-transparent rounded-lg shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
+              className="bg-blue-600 border border-transparent rounded-xl shadow-md py-3 px-6 inline-flex justify-center text-base font-bold text-white hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 transform hover:-translate-y-0.5"
             >
               {isSubmitting ? 'Creating...' : 'Create Ticket'}
             </button>

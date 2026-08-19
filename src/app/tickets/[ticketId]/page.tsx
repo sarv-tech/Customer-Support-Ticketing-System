@@ -111,34 +111,34 @@ export default function TicketDetailsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="p-6 sm:p-8 border-b border-slate-200 bg-slate-50">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{ticket.ticket_id}</h1>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${priorityColors[ticket.priority]}`}>
+        <div className="p-6 sm:p-10 border-b border-slate-200 bg-slate-50">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{ticket.ticket_id}</h1>
+              <span className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-bold uppercase tracking-wide border shadow-sm ${priorityColors[ticket.priority]}`}>
                 {ticket.priority}
               </span>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusColors[ticket.status]}`}>
+              <span className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-bold uppercase tracking-wide border shadow-sm ${statusColors[ticket.status]}`}>
                 {ticket.status}
               </span>
             </div>
-            <div className="text-sm text-slate-500">
+            <div className="text-sm font-medium text-slate-500">
               Opened {format(new Date(ticket.created_at), 'MMM d, yyyy HH:mm')}
             </div>
           </div>
-          <h2 className="text-xl font-semibold text-slate-900 mb-2">{ticket.subject}</h2>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-slate-600">
-            <div><span className="font-medium text-slate-700">From:</span> {ticket.customer_name}</div>
-            <div><span className="font-medium text-slate-700">Email:</span> {ticket.customer_email}</div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-3">{ticket.subject}</h2>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 text-base text-slate-600 bg-white p-4 rounded-xl border border-slate-200 shadow-sm inline-flex">
+            <div><span className="font-bold text-slate-800 uppercase text-xs tracking-wider">From:</span> {ticket.customer_name}</div>
+            <div><span className="font-bold text-slate-800 uppercase text-xs tracking-wider">Email:</span> {ticket.customer_email}</div>
           </div>
         </div>
 
         {/* Description */}
-        <div className="p-6 sm:p-8 border-b border-slate-200">
-          <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Description</h3>
-          <div className="prose prose-slate max-w-none text-slate-700 whitespace-pre-wrap bg-slate-50 p-4 rounded-xl border border-slate-100">
+        <div className="p-6 sm:p-10 border-b border-slate-200">
+          <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-5">Description</h3>
+          <div className="prose prose-slate max-w-none text-slate-800 text-lg leading-relaxed whitespace-pre-wrap bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200 shadow-inner">
             {ticket.description}
           </div>
         </div>
@@ -146,19 +146,19 @@ export default function TicketDetailsPage() {
         {/* Actions & Notes Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
           {/* Left Column: Activity & Notes */}
-          <div className="lg:col-span-2 p-6 sm:p-8">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-6">Internal Notes</h3>
+          <div className="lg:col-span-2 p-6 sm:p-10">
+            <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-6">Internal Notes</h3>
             
             <div className="space-y-6 mb-8">
               {ticket.notes.length === 0 ? (
-                <p className="text-slate-500 text-sm italic">No internal notes yet.</p>
+                <p className="text-slate-500 text-base italic font-medium">No internal notes yet.</p>
               ) : (
                 ticket.notes.map((note) => (
-                  <div key={note.id} className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 shadow-sm relative">
-                    <div className="absolute top-4 right-4 text-xs text-yellow-600 font-medium">
+                  <div key={note.id} className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 shadow-sm relative hover:shadow-md transition-shadow">
+                    <div className="absolute top-5 right-5 text-xs text-yellow-700 font-bold tracking-wide uppercase">
                       {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
                     </div>
-                    <p className="text-sm text-yellow-900 whitespace-pre-wrap pr-20">{note.text}</p>
+                    <p className="text-base text-yellow-900 whitespace-pre-wrap pr-24 leading-relaxed font-medium">{note.text}</p>
                   </div>
                 ))
               )}
@@ -171,19 +171,19 @@ export default function TicketDetailsPage() {
             }}>
               <div className="mt-2">
                 <textarea
-                  rows={3}
-                  className="block w-full rounded-xl border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 placeholder-slate-400"
+                  rows={4}
+                  className="block w-full rounded-2xl border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base p-4 placeholder-slate-400 bg-slate-50 hover:bg-white focus:bg-white transition-colors resize-y"
                   placeholder="Add a new internal note..."
                   value={noteText}
                   onChange={(e) => setNoteText(e.target.value)}
                   disabled={isUpdating}
                 />
               </div>
-              <div className="mt-3 flex justify-end">
+              <div className="mt-4 flex justify-end">
                 <button
                   type="submit"
                   disabled={isUpdating || !noteText.trim()}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl text-base font-bold shadow-sm hover:bg-blue-700 hover:shadow-md disabled:opacity-50 transition-all duration-200 transform hover:-translate-y-0.5"
                 >
                   Add Note
                 </button>
@@ -192,17 +192,17 @@ export default function TicketDetailsPage() {
           </div>
 
           {/* Right Column: Update Status/Priority */}
-          <div className="p-6 sm:p-8 bg-slate-50">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-6">Manage Ticket</h3>
+          <div className="p-6 sm:p-10 bg-slate-50">
+            <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-6">Manage Ticket</h3>
             
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Update Status</label>
+                <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">Update Status</label>
                 <select
                   value={ticket.status}
                   disabled={isUpdating}
                   onChange={(e) => handleUpdate({ status: e.target.value })}
-                  className="block w-full bg-white rounded-lg border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3"
+                  className="block w-full bg-white rounded-xl border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base py-3 px-4 transition-colors cursor-pointer"
                 >
                   <option value="Open">Open</option>
                   <option value="In Progress">In Progress</option>
@@ -211,12 +211,12 @@ export default function TicketDetailsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Update Priority</label>
+                <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">Update Priority</label>
                 <select
                   value={ticket.priority}
                   disabled={isUpdating}
                   onChange={(e) => handleUpdate({ priority: e.target.value })}
-                  className="block w-full bg-white rounded-lg border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3"
+                  className="block w-full bg-white rounded-xl border-slate-300 border shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base py-3 px-4 transition-colors cursor-pointer"
                 >
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
