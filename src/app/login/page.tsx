@@ -1,6 +1,10 @@
+'use client'
+
+import { useActionState } from 'react'
 import { signIn } from '@/app/actions/auth'
 
 export default function LoginPage() {
+  const [state, formAction, isPending] = useActionState(signIn, null)
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-slate-200 relative overflow-hidden">
@@ -21,7 +25,13 @@ export default function LoginPage() {
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" action={signIn}>
+        <form className="mt-8 space-y-6" action={formAction}>
+          {state?.error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm font-medium border border-red-200">
+              {state.error}
+            </div>
+          )}
+          
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -78,9 +88,10 @@ export default function LoginPage() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
+              disabled={isPending}
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-bold rounded-xl text-white ${isPending ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg transition-all duration-200 transform ${!isPending && 'hover:-translate-y-0.5'}`}
             >
-              Sign in
+              {isPending ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

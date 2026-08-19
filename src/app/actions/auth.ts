@@ -3,10 +3,14 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export async function signIn(formData: FormData) {
-  // In a real application, you would validate credentials against a database here.
-  // For this assignment, we are simulating a successful login.
-  
+export async function signIn(prevState: any, formData: FormData) {
+  const email = formData.get('email')
+  const password = formData.get('password')
+
+  if (email !== 'demo@datastraw.com' || password !== 'password123') {
+    return { error: 'Invalid email or password. Please use demo@datastraw.com and password123.' }
+  }
+
   // Set a mock authentication cookie that expires in 1 day
   const cookieStore = await cookies()
   cookieStore.set('auth_token', 'mock_secure_token_12345', {
