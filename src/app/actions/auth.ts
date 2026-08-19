@@ -4,8 +4,8 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export async function signIn(prevState: any, formData: FormData) {
-  const email = formData.get('email')
-  const password = formData.get('password')
+  const email = formData.get('email')?.toString().trim().toLowerCase()
+  const password = formData.get('password')?.toString().trim()
 
   if (email !== 'demo@datastraw.com' || password !== 'password123') {
     return { error: 'Invalid email or password. Please use demo@datastraw.com and password123.' }
