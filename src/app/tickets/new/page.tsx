@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 export default function NewTicketPage() {
@@ -61,16 +62,13 @@ export default function NewTicketPage() {
       )}
 
       {/* Back */}
-      <button
-        onClick={() => router.back()}
-        className="inline-flex items-center gap-1.5 text-sm font-medium mb-5 transition-colors"
-        style={{ color: 'var(--text-tertiary)' }}
-        onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-        onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-tertiary)')}
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-1.5 text-sm font-medium mb-5 transition-colors text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back
-      </button>
+        Back to Dashboard
+      </Link>
 
       <div className="t-card rounded-2xl overflow-hidden">
         {/* Card header */}

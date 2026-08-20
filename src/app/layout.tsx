@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* Command Palette — mounted globally */}
           {isAuthenticated && <CommandPaletteWrapper />}
 
-          <header className="sticky top-0 z-30 border-b" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', boxShadow: 'var(--shadow-sm)' }}>
+          <header className="sticky top-0 z-30 border-b backdrop-blur-md" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)', boxShadow: 'var(--shadow-sm)' }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16 items-center gap-4">
 

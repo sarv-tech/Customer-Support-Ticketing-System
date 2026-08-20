@@ -33,7 +33,10 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ t
   return (
     <div className="max-w-4xl mx-auto space-y-5 animate-fade-in-up">
       {/* Back */}
-      <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors" style={{ color: 'var(--text-tertiary)' }}>
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+      >
         <ArrowLeft className="h-4 w-4" />
         Back to Dashboard
       </Link>
