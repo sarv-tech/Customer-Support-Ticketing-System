@@ -8,7 +8,7 @@ This system acts as a central hub for support agents to track, prioritize, and r
 
 ## 🚀 Live Demo
 
-> **Status:** Ready for Vercel Deployment
+> **Live URL:** [https://customer-support-ticketing-system-l.vercel.app/](https://customer-support-ticketing-system-l.vercel.app/)
 
 **Demo Credentials:**
 - **Email:** `demo@datastraw.com`
