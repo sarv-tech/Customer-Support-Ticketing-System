@@ -70,12 +70,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                 {/* ── Desktop Nav ── */}
                 {isAuthenticated && (
-                  <nav className="hidden md:flex items-center gap-2 flex-1 justify-end">
+                  <nav className="hidden lg:flex items-center gap-2 flex-1 justify-end">
                     <SearchTriggerButton />
                     <NotificationBell breachTickets={breachTickets} />
                     <a
                       href="/tickets/new"
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm hover:shadow-md transition-all"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm hover:shadow-md transition-all flex-shrink-0 whitespace-nowrap"
                     >
                       + New Ticket
                     </a>
@@ -93,7 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
                 {/* Mobile */}
                 {isAuthenticated && (
-                  <div className="flex md:hidden items-center gap-2">
+                  <div className="flex lg:hidden items-center gap-2">
                     <NotificationBell breachTickets={breachTickets} />
                     <ThemeToggle />
                     <MobileNav />
