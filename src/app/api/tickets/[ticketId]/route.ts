@@ -103,3 +103,22 @@ export async function PUT(
     return NextResponse.json({ error: 'Failed to update ticket' }, { status: 500 })
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ ticketId: string }> }
+) {
+  const { ticketId } = await params
+  try {
+    const existingTicket = await prisma.ticket.findUnique({ where: { ticketId } })
+    if (!existingTicket) {
+      return NextResponse.json({ error: 'Ticket not found' }, { status: 404 })
+    }
+
+    await prisma.ticket.delete({ where: { ticketId } })
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('DELETE /api/tickets/[ticketId] error:', error)
+    return NextResponse.json({ error: 'Failed to delete ticket' }, { status: 500 })
+  }
+}

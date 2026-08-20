@@ -41,15 +41,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       })
       breachTickets = openTickets
         .map((t) => ({ ...t, hoursOpen: differenceInHours(new Date(), t.createdAt) }))
-        .filter((t) => t.hoursOpen > 24)
+        .filter((t) => t.hoursOpen > 12)
         .slice(0, 20)
     } catch { /* ignore DB errors in layout */ }
   }
 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col transition-colors duration-200" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
-        <ThemeProvider>
+      <body className="min-h-full flex flex-col transition-colors duration-200" style={{ backgroundColor: 'var(--bg-page)', color: 'var(--text-primary)' }}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
           {/* Command Palette — mounted globally */}
           {isAuthenticated && <CommandPaletteWrapper />}
 

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Search, Filter, X } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Search, Filter, X, Download } from 'lucide-react'
 
 interface SearchFiltersProps {
   initialSearch: string
@@ -12,6 +12,8 @@ interface SearchFiltersProps {
 
 export default function SearchFilters({ initialSearch, initialStatus, initialPriority }: SearchFiltersProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  
   const [search,   setSearch]   = useState(initialSearch)
   const [status,   setStatus]   = useState(initialStatus)
   const [priority, setPriority] = useState(initialPriority)
@@ -19,14 +21,24 @@ export default function SearchFilters({ initialSearch, initialStatus, initialPri
 
   useEffect(() => {
     const id = setTimeout(() => {
-      const params = new URLSearchParams()
-      if (search)   params.set('search',   search)
-      if (status)   params.set('status',   status)
+      const params = new URLSearchParams(searchParams.toString())
+      
+      if (search) params.set('search', search)
+      else params.delete('search')
+      
+      if (status) params.set('status', status)
+      else params.delete('status')
+      
       if (priority) params.set('priority', priority)
-      router.push(`/dashboard?${params.toString()}`)
+      else params.delete('priority')
+      
+      const newQuery = params.toString()
+      if (searchParams.toString() !== newQuery) {
+        router.push(`/dashboard?${newQuery}`, { scroll: false })
+      }
     }, 300)
     return () => clearTimeout(id)
-  }, [search, status, priority, router])
+  }, [search, status, priority, router, searchParams])
 
   const hasFilters = search || status || priority
   const activeCount = [search, status, priority].filter(Boolean).length
@@ -59,7 +71,7 @@ export default function SearchFilters({ initialSearch, initialStatus, initialPri
           )}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {/* Filter toggle */}
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -80,6 +92,23 @@ export default function SearchFilters({ initialSearch, initialStatus, initialPri
             )}
           </button>
 
+          {/* Export CSV */}
+          <button
+            onClick={() => {
+              const params = new URLSearchParams()
+              if (search) params.set('search', search)
+              if (status) params.set('status', status)
+              if (priority) params.set('priority', priority)
+              window.open(`/api/tickets/export?${params.toString()}`, '_blank')
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium rounded-lg border transition-all hover:bg-[var(--bg-subtle)]"
+            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)' }}
+            aria-label="Export to CSV"
+          >
+            <Download className="h-4 w-4" />
+            Export
+          </button>
+
           {/* Clear */}
           {hasFilters && (
             <button
@@ -96,22 +125,38 @@ export default function SearchFilters({ initialSearch, initialStatus, initialPri
       </div>
 
       {/* Expanded filters */}
-      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2.5 transition-all duration-200 overflow-hidden ${
+      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 transition-all duration-200 overflow-hidden ${
         isFilterOpen ? 'max-h-40 opacity-100 pt-1' : 'max-h-0 opacity-0'
       }`}>
-        <select value={status} onChange={e => setStatus(e.target.value)} className={selectCls} aria-label="Filter by status">
-          <option value="">All Statuses</option>
-          <option value="Open">Open</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Closed">Closed</option>
-        </select>
-        <select value={priority} onChange={e => setPriority(e.target.value)} className={selectCls} aria-label="Filter by priority">
-          <option value="">All Priorities</option>
-          <option value="Urgent">Urgent</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
+        <div className="flex flex-col gap-2">
+          <label className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)' }}>Status</label>
+          <select value={status} onChange={e => setStatus(e.target.value)} className={selectCls} aria-label="Filter by status">
+            <option value="">All Statuses</option>
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+        
+        <div className="flex flex-col gap-2">
+          <label className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-tertiary)' }}>Priority</label>
+          <div className="flex flex-wrap gap-2">
+            {['', 'Urgent', 'High', 'Medium', 'Low'].map(p => (
+              <button
+                key={p}
+                onClick={() => setPriority(p)}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-all ${
+                  priority === p 
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                    : 'hover:bg-[var(--bg-subtle)]'
+                }`}
+                style={priority === p ? {} : { color: 'var(--text-secondary)', borderColor: 'var(--border)' }}
+              >
+                {p || 'All'}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

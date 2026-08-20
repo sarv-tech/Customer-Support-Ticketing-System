@@ -1,98 +1,123 @@
-# Datastraw Customer Support CRM
+# Datastraw CRM: Customer Support Ticketing System
 
-A full-stack Customer Support Ticketing System built with **Next.js 16**, **Prisma ORM**, **PostgreSQL (Neon)**, and **Tailwind CSS**.
+A professional, full-stack Customer Support Ticketing System built with **Next.js 16 (App Router)**, **Prisma ORM**, **PostgreSQL (Neon)**, and **Tailwind CSS**. 
+
+This system acts as a central hub for support agents to track, prioritize, and resolve customer issues efficiently, featuring a dual-view Dashboard (List & Kanban), Real-time SLA monitoring, and Global Command Palette navigation.
+
+---
 
 ## 🚀 Live Demo
 
-> Deployed on Vercel — see submission email for the live URL.
+> **Status:** Ready for Vercel Deployment
 
 **Demo Credentials:**
-- Email: `demo@datastraw.com`
-- Password: `password123`
+- **Email:** `demo@datastraw.com`
+- **Password:** `password123`
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### Key Features (Assignment Requirements)
-| Feature | Description |
-|---------|-------------|
-| ✅ Create Tickets | Form with Customer Name, Email, Subject, Description, Priority — auto-generates unique Ticket ID |
-| ✅ List All Tickets | Dashboard with priority-sorted ticket list, stats cards, and SLA breach indicators |
-| ✅ Real-time Search | Debounced search across Ticket ID, Customer Name, Email, and Subject |
-| ✅ Filter by Status | Dropdown filters for Status (Open/In Progress/Closed) and Priority |
-| ✅ View & Update | Detail page to change Status/Priority and add internal notes |
-| ⭐ SLA Breach Alert | Pulsing red badge for Open tickets older than 24 hours (Bonus) |
+### 1. Dual-View Dashboard 🔀
+- **List View:** High-density data table with bulk actions (Update Status/Priority, Delete).
+- **Kanban Board:** Drag-and-drop interactive board for visual task management.
+
+### 2. Smart "Zero-Schema" Intelligence 🧠
+- **SLA Breach Alerts:** Tickets stuck in the "Open" status for over 12 hours trigger red pulsing visual alerts on the board and in the global Notification Bell.
+- **Sentiment Analysis:** Auto-detects customer tone from the ticket description (e.g., Angry 😡, Happy 😊).
+- **Infinite Loop Detection:** Flags tickets that are repeatedly reopened to prevent them from getting stuck.
+
+### 3. Global Command Palette ⌨️
+- Press `Cmd + K` (Mac) or `Ctrl + K` (Windows) from anywhere in the app to open the floating command palette.
+- Instantly search for tickets or execute quick actions without using your mouse.
+
+### 4. Advanced Analytics & Filtering 📊
+- Real-time **debounced search** by Ticket ID, Customer Name, Email, or Subject.
+- Compounding dropdown filters for Status and Priority.
+- Live Data Visualization (Donut & Bar charts) showing database breakdowns.
+- One-click **CSV Export** of the current filtered view.
+
+### 5. Seamless Theming 🌓
+- Vercel-inspired, production-grade Dark and Light mode.
+- System preference detection and manual override via the navigation bar.
 
 ---
 
-## 🗄️ Database Schema
+## 🗄️ Database Schema (PostgreSQL)
+
+The database intentionally avoids over-engineering, using only two core tables linked by a one-to-many relationship:
 
 ### `Ticket` Table
 | Column | Type | Notes |
 |--------|------|-------|
-| id | String (CUID) | Primary key |
-| ticketId | String | Unique, e.g. `TKT-123456` |
-| customerName | String | |
-| customerEmail | String | |
-| subject | String | |
-| description | String | |
-| status | String | Open / In Progress / Closed |
-| priority | String | Low / Medium / High / Urgent |
-| createdAt | DateTime | Auto-set |
-| updatedAt | DateTime | Auto-updated |
+| `id` | String (CUID) | Primary key |
+| `ticketId` | String | Unique human-readable ID (e.g. `TKT-123456`) |
+| `customerName` | String | |
+| `customerEmail` | String | |
+| `subject` | String | |
+| `description` | String | |
+| `status` | String | `Open` / `In Progress` / `Closed` |
+| `priority` | String | `Low` / `Medium` / `High` / `Urgent` |
+| `createdAt` | DateTime | Auto-set |
+| `updatedAt` | DateTime | Auto-updated |
 
-### `Note` Table
+### `Note` Table (Audit Trail)
 | Column | Type | Notes |
 |--------|------|-------|
-| id | String (CUID) | Primary key |
-| text | String | |
-| ticketId | String | Foreign key → Ticket |
-| createdAt | DateTime | Auto-set |
+| `id` | String (CUID) | Primary key |
+| `text` | String | The content of the note |
+| `ticketId` | String | Foreign key → `Ticket` |
+| `createdAt` | DateTime | Auto-set |
+
+*(Note: The system automatically injects `[SYSTEM]` notes into the Timeline whenever a Ticket's status or priority changes, providing a perfect audit trail).*
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 REST API Endpoints
 
-All endpoints use `snake_case` JSON as required:
+All endpoints use `snake_case` JSON responses as per standard API conventions.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/api/tickets` | List all tickets (supports `?search=`, `?status=`, `?priority=`) |
 | `POST` | `/api/tickets` | Create a new ticket |
-| `GET` | `/api/tickets/:ticketId` | Get single ticket with notes |
-| `PUT` | `/api/tickets/:ticketId` | Update status, priority, or add a note |
-
-### POST `/api/tickets` — Request Body
-```json
-{
-  "customer_name": "John Doe",
-  "customer_email": "john@example.com",
-  "subject": "Cannot login",
-  "description": "I am unable to login since yesterday.",
-  "priority": "Urgent"
-}
-```
-
-### PUT `/api/tickets/:ticketId` — Request Body
-```json
-{
-  "status": "In Progress",
-  "priority": "High",
-  "notes": "Investigating the issue."
-}
-```
+| `GET` | `/api/tickets/:ticketId` | Get single ticket with associated notes |
+| `PUT` | `/api/tickets/:ticketId` | Update status/priority, or append a new note |
+| `DELETE` | `/api/tickets` | Bulk delete tickets (expects array of `ids`) |
 
 ---
 
-## 🏗️ Tech Stack
+## 📁 Folder Structure
 
-- **Framework**: Next.js 16 (App Router)
-- **Database**: PostgreSQL via Neon (serverless)
-- **ORM**: Prisma
-- **Styling**: Tailwind CSS
-- **Authentication**: Custom cookie-based auth with server actions
-- **Deployment**: Vercel
+```
+src/
+├── app/
+│   ├── actions/          # Server actions (auth logic)
+│   ├── api/              # REST API routes
+│   │   └── tickets/
+│   │       ├── route.ts
+│   │       └── [ticketId]/route.ts
+│   ├── dashboard/        # Main Dashboard Workspace
+│   ├── login/            # Minimal Auth Login Page
+│   ├── signup/           # Minimal Auth Signup Page
+│   ├── tickets/          # Ticket management interfaces
+│   │   ├── new/          # Create ticket form
+│   │   └── [ticketId]/   # Ticket details and audit timeline
+│   ├── globals.css       # Global design tokens and animations
+│   ├── layout.tsx        # Root layout with Theme & Auth providers
+│   └── page.tsx          # Animated Landing Page
+├── components/           # Reusable UI components
+│   ├── kanban/           # Drag-and-drop board components
+│   ├── Charts.tsx        # Analytics visualizations
+│   ├── CommandPalette.tsx# Global shortcut search (Cmd+K)
+│   ├── MobileNav.tsx     # Responsive navigation
+│   ├── NotificationBell.tsx # SLA breach notifications
+│   ├── SearchFilters.tsx # Real-time filtering and CSV export
+│   ├── ThemeProvider.tsx # Dark/Light mode provider
+│   └── TicketListClient.tsx # Main data table view
+└── lib/                  # Utilities
+    └── prisma.ts         # Database client singleton
+```
 
 ---
 
@@ -100,9 +125,9 @@ All endpoints use `snake_case` JSON as required:
 
 ### Prerequisites
 - Node.js 18+
-- A Neon PostgreSQL database (free tier works)
+- A Neon PostgreSQL database (free tier works perfectly)
 
-### Setup
+### Setup Instructions
 
 ```bash
 # 1. Clone the repo
@@ -112,45 +137,28 @@ cd Customer-Support-Ticketing-System
 # 2. Install dependencies
 npm install
 
-# 3. Create .env file
-echo 'DATABASE_URL="your-neon-connection-string"' > .env
+# 3. Setup Environment Variables
+# Create a .env file in the root directory:
+DATABASE_URL="your-neon-connection-string"
 
-# 4. Run database migrations
+# 4. Run Database Migrations
 npx prisma db push
 
-# 5. Start dev server
+# 5. Start the Development Server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and sign in with the demo credentials above.
+Open [http://localhost:3000](http://localhost:3000) and sign in!
 
 ---
 
-## 🚢 Deployment (Vercel)
+## 🏗️ Tech Stack
 
-1. Push to GitHub
-2. Import project at [vercel.com](https://vercel.com)
-3. Add environment variable: `DATABASE_URL` = your Neon connection string
-4. Deploy — Vercel auto-detects Next.js
-
----
-
-## 📁 Project Structure
-
-```
-src/
-├── app/
-│   ├── actions/auth.ts       # Sign in / Sign out server actions
-│   ├── api/tickets/          # REST API routes
-│   ├── login/page.tsx        # Login page
-│   ├── tickets/
-│   │   ├── new/page.tsx      # Create ticket form
-│   │   └── [ticketId]/       # Ticket detail & update
-│   ├── globals.css           # Global styles & animations
-│   ├── layout.tsx            # Root layout with auth header
-│   └── page.tsx              # Dashboard
-├── components/
-│   └── SearchFilters.tsx     # Real-time search & filter component
-└── lib/
-    └── prisma.ts             # Prisma singleton client
-```
+- **Framework**: Next.js 16 (App Router)
+- **Database**: PostgreSQL (Neon Serverless)
+- **ORM**: Prisma
+- **Styling**: Tailwind CSS v4 (Design Tokens)
+- **Icons**: Lucide React
+- **Animations**: CSS Keyframes & Tailwind
+- **Authentication**: Custom cookie-based auth via Server Actions
+- **Deployment**: Vercel

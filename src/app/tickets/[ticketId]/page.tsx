@@ -24,7 +24,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ t
 
   const isOpen = ticket.status === 'Open'
   const hoursOpen = differenceInHours(new Date(), ticket.createdAt)
-  const isSlaBreach = isOpen && hoursOpen > 24
+  const isSlaBreach = isOpen && hoursOpen > 12
 
   const serializedNotes = ticket.notes.map(n => ({
     id: n.id, text: n.text, createdAt: n.createdAt.toISOString(),
