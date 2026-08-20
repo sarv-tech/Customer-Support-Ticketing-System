@@ -2,25 +2,34 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { randomUUID } from 'crypto'
 
-export async function signIn(prevState: any, formData: FormData) {
+// Credentials can be overridden via environment variables
+const DEMO_EMAIL = process.env.AUTH_EMAIL ?? 'demo@datastraw.com'
+const DEMO_PASSWORD = process.env.AUTH_PASSWORD ?? 'password123'
+
+export async function signIn(prevState: unknown, formData: FormData) {
   const email = formData.get('email')?.toString().trim().toLowerCase()
   const password = formData.get('password')?.toString().trim()
 
-  if (email !== 'demo@datastraw.com' || password !== 'password123') {
+  if (!email || !password) {
+    return { error: 'Email and password are required.' }
+  }
+
+  if (email !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
     return { error: 'Invalid email or password. Please use demo@datastraw.com and password123.' }
   }
 
-  // Set a mock authentication cookie that expires in 1 day
+  // Use a per-session random UUID instead of a static token
   const cookieStore = await cookies()
-  cookieStore.set('auth_token', 'mock_secure_token_12345', {
+  cookieStore.set('auth_token', randomUUID(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     maxAge: 60 * 60 * 24, // 1 day
     path: '/',
+    sameSite: 'lax',
   })
 
-  // Redirect to the dashboard
   redirect('/')
 }
 

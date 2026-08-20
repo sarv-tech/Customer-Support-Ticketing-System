@@ -1,105 +1,135 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
+/* ==========================================
+   DARK MODE
+   ========================================== */
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* Smooth focus ring */
+/* ==========================================
+   CUSTOM SCROLLBAR
+   ========================================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* ==========================================
+   FOCUS RING
+   ========================================== */
 *:focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
-/* Animation classes */
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-in-up {
-  animation: fadeInUp 0.3s ease-out forwards;
-}
+.animate-fade-in-up { animation: fadeInUp 0.35s ease-out forwards; }
 
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
-.animate-slide-in-right {
-  animation: slideInRight 0.3s ease-out forwards;
-}
+.animate-slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
 
 @keyframes pulse-ring {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.35); }
+  50%       { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
 }
-.animate-pulse-ring {
-  animation: pulse-ring 1.5s ease-in-out infinite;
-}
+.animate-pulse-ring { animation: pulse-ring 1.5s ease-in-out infinite; }
 
-/* Toast animation */
 @keyframes slideInBottom {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-.animate-slide-in-bottom {
-  animation: slideInBottom 0.3s ease-out forwards;
+.animate-slide-in-bottom { animation: slideInBottom 0.3s ease-out forwards; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* ==========================================
+   CARD HOVER
+   ========================================== */
+.card-hover { transition: all 0.2s ease; }
+.card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -8px rgba(0,0,0,0.08); }
+
+/* ==========================================
+   DARK MODE BASE STYLES
+   ========================================== */
+.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
 }
 
-/* Card hover effect */
-.card-hover {
-  transition: all 0.2s ease;
-}
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.08);
+/* Headers */
+.dark header {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
 }
 
-/* Status badge animations */
-.status-badge {
-  transition: all 0.2s ease;
+/* Cards / white panels */
+.dark .bg-white {
+  background-color: #1e293b !important;
 }
-.status-badge:hover {
-  transform: scale(1.05);
+.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+.dark .border-slate-200 {
+  border-color: #334155 !important;
+}
+.dark .border-slate-300 {
+  border-color: #475569 !important;
 }
 
-/* Input focus styles */
-.input-focus-ring:focus {
-  outline: none;
-  --tw-ring-color: #3b82f6;
-  --tw-ring-offset-width: 2px;
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  border-color: transparent;
+/* Text */
+.dark .text-slate-900 { color: #f1f5f9 !important; }
+.dark .text-slate-800 { color: #e2e8f0 !important; }
+.dark .text-slate-700 { color: #cbd5e1 !important; }
+.dark .text-slate-600 { color: #94a3b8 !important; }
+.dark .text-slate-500 { color: #64748b !important; }
+.dark .text-slate-400 { color: #475569 !important; }
+
+/* Inputs */
+.dark input, .dark textarea, .dark select {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
 }
+.dark input::placeholder,
+.dark textarea::placeholder { color: #64748b !important; }
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+  border-color: #3b82f6 !important;
+  background-color: #1e293b !important;
+}
+
+/* Dividers */
+.dark .divide-slate-200 > * + * { border-color: #334155 !important; }
+
+/* Hover states */
+.dark .hover\:bg-slate-50:hover  { background-color: #1e293b !important; }
+.dark .hover\:bg-slate-100:hover { background-color: #334155 !important; }
+
+/* Stat cards in dark */
+.dark .bg-blue-50   { background-color: #1e3a5f !important; }
+.dark .bg-emerald-50 { background-color: #14332a !important; }
+.dark .bg-purple-50  { background-color: #2d1d45 !important; }
+.dark .bg-red-50     { background-color: #3b1212 !important; }
+
+/* Yellow notes */
+.dark .bg-amber-50 { background-color: #2d1f00 !important; }
+.dark .border-amber-200 { border-color: #713f12 !important; }
+.dark .text-amber-900 { color: #fde68a !important; }
+.dark .text-amber-800 { color: #fbbf24 !important; }
+
+/* Note bg */
+.dark .bg-\[\#F8FAFC\] { background-color: #0f172a !important; }
