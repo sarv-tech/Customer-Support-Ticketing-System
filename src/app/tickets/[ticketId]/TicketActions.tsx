@@ -118,22 +118,32 @@ export default function TicketActions({ ticketId, currentStatus, currentPriority
                 <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)', opacity: 0.6 }}>Add a note below to track progress.</p>
               </div>
             ) : (
-              notes.map(note => (
-                <div key={note.id} className="rounded-xl border p-4 transition-shadow hover:shadow-md"
-                  style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                      Staff Note
-                    </span>
-                    <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                      {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
-                    </span>
+              notes.map(note => {
+                const isSystem = note.text.startsWith('[SYSTEM]')
+                const rawText = isSystem ? note.text.replace('[SYSTEM]', '').trim() : note.text
+
+                // Simple parser for **bold** text
+                const formattedText = rawText.split(/(\*\*.*?\*\*)/g).map((part, i) => 
+                  part.startsWith('**') && part.endsWith('**') ? <strong key={i} className="font-semibold text-slate-800 dark:text-slate-200">{part.slice(2, -2)}</strong> : part
+                )
+
+                return (
+                  <div key={note.id} className={`rounded-xl border p-4 transition-shadow hover:shadow-md ${isSystem ? 'bg-transparent border-dashed' : ''}`}
+                    style={{ background: isSystem ? 'transparent' : 'var(--bg-subtle)', borderColor: 'var(--border)' }}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className={`text-[10px] font-bold uppercase tracking-widest ${isSystem ? 'text-slate-500 dark:text-slate-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                        {isSystem ? 'System Audit' : 'Staff Note'}
+                      </span>
+                      <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                        {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
+                      </span>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${isSystem ? 'italic text-slate-500 dark:text-slate-400' : 'whitespace-pre-wrap'}`} style={isSystem ? {} : { color: 'var(--text-primary)' }}>
+                      {formattedText}
+                    </p>
                   </div>
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed" style={{ color: 'var(--text-primary)' }}>
-                    {note.text}
-                  </p>
-                </div>
-              ))
+                )
+              })
             )}
           </div>
 

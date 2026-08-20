@@ -74,13 +74,25 @@ export async function PUT(
       return NextResponse.json({ error: 'Ticket not found' }, { status: 404 })
     }
 
+    const notesToCreate: { text: string }[] = []
+    
+    if (status && status !== existingTicket.status) {
+      notesToCreate.push({ text: `[SYSTEM] Status changed from **${existingTicket.status}** to **${status}**` })
+    }
+    if (priority && priority !== existingTicket.priority) {
+      notesToCreate.push({ text: `[SYSTEM] Priority changed from **${existingTicket.priority}** to **${priority}**` })
+    }
+    if (notes?.trim()) {
+      notesToCreate.push({ text: notes.trim() })
+    }
+
     const updatedTicket = await prisma.ticket.update({
       where: { ticketId },
       data: {
         ...(status && { status }),
         ...(priority && { priority }),
-        ...(notes?.trim() && {
-          notes: { create: { text: notes.trim() } },
+        ...(notesToCreate.length > 0 && {
+          notes: { create: notesToCreate },
         }),
       },
     })
