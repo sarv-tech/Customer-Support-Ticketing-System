@@ -5,9 +5,9 @@ import { Search, Ticket, Plus, ArrowRight, Keyboard, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface TicketResult {
-  ticketId: string
+  ticket_id: string
   subject: string
-  customerName: string
+  customer_name: string
   status: string
   priority: string
 }
@@ -87,7 +87,7 @@ export default function CommandPalette() {
           setOpen(false)
         } else {
           const ticket = results[activeIndex - quickActions.length]
-          if (ticket) { router.push(`/tickets/${ticket.ticketId}`); setOpen(false) }
+          if (ticket) { router.push(`/tickets/${ticket.ticket_id}`); setOpen(false) }
         }
       }
     }
@@ -169,8 +169,8 @@ export default function CommandPalette() {
                 const idx = quickActions.length + i
                 return (
                   <button
-                    key={ticket.ticketId}
-                    onClick={() => { router.push(`/tickets/${ticket.ticketId}`); setOpen(false) }}
+                    key={ticket.ticket_id ?? i}
+                    onClick={() => { router.push(`/tickets/${ticket.ticket_id}`); setOpen(false) }}
                     onMouseEnter={() => setActiveIndex(idx)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-left ${
                       activeIndex === idx
@@ -184,7 +184,7 @@ export default function CommandPalette() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={`text-[10px] font-mono font-semibold ${activeIndex === idx ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'}`}>
-                          {ticket.ticketId}
+                          {ticket.ticket_id}
                         </span>
                         <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${activeIndex === idx ? 'bg-white/20 text-white' : statusColors[ticket.status]}`}>
                           {ticket.status}
@@ -192,7 +192,7 @@ export default function CommandPalette() {
                       </div>
                       <p className="text-sm font-medium truncate leading-tight mt-0.5">{ticket.subject}</p>
                       <p className={`text-xs truncate ${activeIndex === idx ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
-                        {ticket.customerName}
+                        {ticket.customer_name}
                       </p>
                     </div>
                     <ArrowRight className={`h-4 w-4 flex-shrink-0 opacity-0 group-hover:opacity-100 ${activeIndex === idx ? 'opacity-100' : ''}`} />
