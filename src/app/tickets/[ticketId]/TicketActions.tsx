@@ -22,8 +22,8 @@ export default function TicketActions({ ticketId, currentStatus, currentPriority
   const [toast, setToast]               = useState<{ message: string; type: 'success' | 'error' } | null>(null)
   const [localStatus, setLocalStatus]   = useState(currentStatus)
   const [localPriority, setLocalPriority] = useState(currentPriority)
-  const statusDebounceRef   = useRef<ReturnType<typeof setTimeout>>()
-  const priorityDebounceRef = useRef<ReturnType<typeof setTimeout>>()
+  const statusDebounceRef   = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const priorityDebounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => { setLocalStatus(currentStatus) },   [currentStatus])
   useEffect(() => { setLocalPriority(currentPriority) }, [currentPriority])
