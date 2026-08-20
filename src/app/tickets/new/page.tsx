@@ -35,7 +35,7 @@ export default function NewTicketPage() {
         throw new Error(err.error || 'Failed to create ticket')
       }
       setToast({ message: '✅ Ticket created successfully!', type: 'success' })
-      setTimeout(() => { router.push('/'); router.refresh() }, 1000)
+      setTimeout(() => { router.push('/dashboard'); router.refresh() }, 1000)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An error occurred')
       setIsSubmitting(false)

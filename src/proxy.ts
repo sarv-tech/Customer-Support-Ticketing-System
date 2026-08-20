@@ -8,16 +8,16 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Public routes that don't require authentication
-  const isPublicRoute = pathname === '/login' || pathname.startsWith('/api/')
+  const isPublicRoute = pathname === '/' || pathname === '/login' || pathname === '/signup' || pathname.startsWith('/api/')
 
   // Unauthenticated user trying to access a protected route
   if (!authToken && !isPublicRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Already logged-in user trying to access login page
-  if (authToken && pathname === '/login') {
-    return NextResponse.redirect(new URL('/', request.url))
+  // Already logged-in user trying to access public landing/auth pages
+  if (authToken && (pathname === '/login' || pathname === '/signup' || pathname === '/')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return NextResponse.next()

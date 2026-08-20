@@ -23,7 +23,7 @@ export default function SearchFilters({ initialSearch, initialStatus, initialPri
       if (search)   params.set('search',   search)
       if (status)   params.set('status',   status)
       if (priority) params.set('priority', priority)
-      router.push(`/?${params.toString()}`)
+      router.push(`/dashboard?${params.toString()}`)
     }, 300)
     return () => clearTimeout(id)
   }, [search, status, priority, router])

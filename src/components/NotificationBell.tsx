@@ -149,7 +149,7 @@ export default function NotificationBell({ breachTickets }: NotificationBellProp
           {visible.length > 0 && (
             <div className="px-4 py-2.5 border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">
               <Link
-                href="/?status=Open"
+                href="/dashboard?status=Open"
                 onClick={() => setOpen(false)}
                 className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 font-semibold transition-colors"
               >

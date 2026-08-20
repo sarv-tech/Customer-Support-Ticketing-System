@@ -30,7 +30,31 @@ export async function signIn(prevState: unknown, formData: FormData) {
     sameSite: 'lax',
   })
 
-  redirect('/')
+  redirect('/dashboard')
+}
+
+export async function signUp(prevState: unknown, formData: FormData) {
+  const email = formData.get('email')?.toString().trim().toLowerCase()
+  const password = formData.get('password')?.toString().trim()
+  const fullName = formData.get('fullName')?.toString().trim()
+  const company = formData.get('company')?.toString().trim()
+
+  if (!email || !password || !fullName || !company) {
+    return { error: 'All fields are required.' }
+  }
+
+  // MOCK SIGNUP: Since we don't have a users table, we just log them in
+  // as the demo user immediately after they "sign up"
+  const cookieStore = await cookies()
+  cookieStore.set('auth_token', randomUUID(), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24, // 1 day
+    path: '/',
+    sameSite: 'lax',
+  })
+
+  redirect('/dashboard')
 }
 
 export async function signOut() {

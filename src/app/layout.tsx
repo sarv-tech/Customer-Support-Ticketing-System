@@ -62,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
                     <span className="text-white text-sm font-bold">D</span>
                   </div>
-                  <a href="/" className="text-xl font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
+                  <a href={isAuthenticated ? "/dashboard" : "/"} className="text-xl font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
                     Datastraw
                     <span className="hidden sm:inline font-normal text-sm ml-1.5" style={{ color: 'var(--text-muted)' }}>CRM</span>
                   </a>
