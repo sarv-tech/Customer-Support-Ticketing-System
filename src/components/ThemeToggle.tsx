@@ -7,10 +7,21 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label="Toggle dark mode"
-      className="p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-700 transition-all"
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+      className="relative p-2 rounded-xl transition-all duration-200 group"
+      style={{ color: 'var(--text-muted)' }}
     >
-      {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      <span
+        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{ backgroundColor: 'var(--bg-muted)' }}
+      />
+      <span className="relative">
+        {theme === 'dark'
+          ? <Sun className="h-4.5 w-4.5 text-amber-400" />
+          : <Moon className="h-4.5 w-4.5" />
+        }
+      </span>
     </button>
   )
 }

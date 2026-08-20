@@ -1,17 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, LayoutDashboard, PlusCircle, LogOut } from 'lucide-react'
+import { Menu, X, PlusCircle, LogOut, Search } from 'lucide-react'
 import { signOut } from '@/app/actions/auth'
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false)
 
+  const openPalette = () => {
+    setOpen(false)
+    setTimeout(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
+    }, 150)
+  }
+
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-all"
+        className="p-2 rounded-xl transition-all"
+        style={{ color: 'var(--text-secondary)' }}
         aria-label="Open menu"
       >
         <Menu className="h-5 w-5" />
@@ -20,56 +28,66 @@ export default function MobileNav() {
       {/* Overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm animate-fade-in"
           onClick={() => setOpen(false)}
         />
       )}
 
       {/* Slide-in Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 z-50 bg-white dark:bg-slate-800 shadow-2xl transform transition-transform duration-300 ${
-          open ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 h-full w-72 z-50 shadow-2xl transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{ backgroundColor: 'var(--bg-surface)', borderLeft: '1px solid var(--border)' }}
       >
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border)' }}>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-700 rounded-md flex items-center justify-center">
               <span className="text-white text-xs font-bold">D</span>
             </div>
-            <span className="font-bold text-slate-900 dark:text-slate-100">Datastraw CRM</span>
+            <span className="font-bold" style={{ color: 'var(--text-primary)' }}>Datastraw CRM</span>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-all text-slate-500"
+            className="p-1.5 rounded-lg transition-all"
+            style={{ color: 'var(--text-muted)' }}
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <nav className="p-4 space-y-1">
-          <a
-            href="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-400 font-medium transition-all"
+        {/* Nav Items */}
+        <nav className="p-3 space-y-1">
+          {/* Search */}
+          <button
+            onClick={openPalette}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-left"
+            style={{ color: 'var(--text-secondary)' }}
           >
-            <LayoutDashboard className="h-5 w-5" />
-            Dashboard
-          </a>
+            <Search className="h-5 w-5" />
+            <span>Search Tickets</span>
+            <kbd className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded" style={{ backgroundColor: 'var(--bg-muted)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+              ⌘K
+            </kbd>
+          </button>
+
+          {/* Create */}
           <a
             href="/tickets/new"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-400 font-medium transition-all"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all"
+            style={{ color: 'var(--text-secondary)' }}
           >
             <PlusCircle className="h-5 w-5" />
             Create Ticket
           </a>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200 dark:border-slate-700">
+        {/* Sign Out */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 border-t" style={{ borderColor: 'var(--border)' }}>
           <form action={signOut}>
             <button
               type="submit"
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 font-medium transition-all hover:bg-red-50"
             >
               <LogOut className="h-5 w-5" />
               Sign Out
